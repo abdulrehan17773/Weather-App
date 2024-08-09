@@ -1,1 +1,57 @@
-testing
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #messages { list-style-type: none; padding: 0; }
+        #messages li { margin-bottom: 10px; }
+        input[type="text"] { width: 300px; }
+        button { margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <form id="chatForm">
+        <input id="messageInput" type="text" placeholder="Type a message..." />
+        <button type="submit">Send</button>
+    </form>
+    <script>
+const form = document.getElementById('chatForm');
+const input = document.getElementById('messageInput');
+const messages = document.getElementById('messages');
+
+// Load messages from localStorage
+function loadMessages() {
+    const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+    messages.innerHTML = savedMessages.map(msg => `<li>${msg}</li>`).join('');
+}
+
+// Save a message to localStorage
+function saveMessage(msg) {
+    const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+    savedMessages.push(msg);
+    localStorage.setItem('messages', JSON.stringify(savedMessages));
+}
+
+// Handle form submission
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const message = input.value.trim();
+    if (message) {
+        saveMessage(message);
+        input.value = '';
+        loadMessages();
+    }
+});
+
+// Load messages initially
+loadMessages();
+
+
+</script>
+</body>
+</html>
